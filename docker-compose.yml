@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  deasy:
+    image: postgres
+    container_name: deasy
+    restart: always
+    ports:
+      - "5432:5432"
+    environment: 
+      POSTGRES_DB: eazycrm
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+
+  web:
+    command: "sleep 30s"
+    build: .
+    command: python run.py
+    volumes:
+      - .:/app
+    image: jsingh/eeazycrm
+    ports:
+      - "5000:5000"
+    depends_on:
+      - deasy
